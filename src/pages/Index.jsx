@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
-import { FiMoreVertical } from "react-icons/fi";
-import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeftElement, Text, VStack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Select, Textarea } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeftElement, Text, VStack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Select, Textarea, Avatar } from "@chakra-ui/react";
 import { SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { useNotes, useAddNote, useUpdateNote, useDeleteNote } from "../integrations/supabase/index.js";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
@@ -75,6 +73,7 @@ const Index = () => {
     <Flex>
       <Box w="20%" bg="gray.100" p={4}>
         <Flex direction="column" align="center" mb={8}>
+          <Avatar size="xl" mb={4} />
           <InputGroup mb={4}>
             <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
             <Input type="text" placeholder="Search notes" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
