@@ -88,7 +88,7 @@ const Index = () => {
       </InputGroup>
       <Flex wrap="wrap" justifyContent="space-between">
         {filteredNotes.map(note => (
-          <Box key={note.id} bg={`${note.color}.50`} p={4} borderRadius="md" width="30%" mb={4} position="relative">
+          <Box key={note.id} bg={`${note.color}.50`} p={4} borderRadius="md" width="30%" mb={4} position="relative" display="flex" flexDirection="column" justifyContent="space-between">
             <Menu>
               <MenuButton as={IconButton} icon={<FiMoreVertical />} variant="ghost" position="absolute" top="0" right="0" />
               <MenuList>
@@ -101,7 +101,7 @@ const Index = () => {
             </Menu>
             <Heading as="h3" size="md" mb={2}>{note.title}</Heading>
             <Text mb={4} whiteSpace="pre-wrap">{note.content}</Text>
-            <Text fontSize="sm" color="gray.500">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
+            <Text fontSize="sm" color="gray.500" mt="auto">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
           </Box>
         ))}
       </Flex>
