@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { FiMoreVertical } from "react-icons/fi";
-import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeftElement, Text, VStack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Select, Textarea } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeftElement, Text, VStack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Select, Textarea, Avatar } from "@chakra-ui/react";
 import { SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { useNotes, useAddNote, useUpdateNote, useDeleteNote } from "../integrations/supabase/index.js";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
@@ -75,6 +75,7 @@ const Index = () => {
     <Flex>
       <Box w="20%" bg="gray.100" p={4}>
         <Flex direction="column" align="center" mb={8}>
+          <Avatar size="xl" name="Nathalia Anderson" src="/images/profile-icon.png" mb={4} />
           <InputGroup mb={4}>
             <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
             <Input type="text" placeholder="Search notes" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
@@ -95,9 +96,18 @@ const Index = () => {
         </VStack>
       </Box>
       <Box w="80%" p={4}>
+        <Flex justifyContent="space-between" alignItems="center" mb={4}>
+          <Box>
+            <Heading as="h2" size="lg" mb={2}>{selectedNote ? selectedNote.title : "Select a note to view its details"}</Heading>
+            {selectedNote && <Text fontSize="sm" color="gray.500">{format(new Date(selectedNote.created_at), 'MMMM d, yyyy h:mm a')}</Text>}
+          </Box>
+          <Box>
+            <Text fontSize="sm" color="gray.500">Personal / Perjalanan Kehidupan Rowgrid</Text>
+            <Text fontSize="sm" color="gray.500">Nathalia Anderson, Today, 15:28</Text>
+          </Box>
+        </Flex>
         {selectedNote ? (
           <Box>
-            <Heading as="h2" size="lg" mb={4}>{selectedNote.title}</Heading>
             <Text mb={4}>{selectedNote.content}</Text>
             <Text fontSize="sm" color="gray.500">{format(new Date(selectedNote.created_at), 'MMMM d, yyyy h:mm a')}</Text>
           </Box>
