@@ -17,6 +17,7 @@ const Index = () => {
   const [newNote, setNewNote] = useState({ title: "", content: "", color: "pink" });
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [noteToEdit, setNoteToEdit] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +56,11 @@ const Index = () => {
     return <div>Error: {error.message}</div>;
   }
 
+  const filteredNotes = notes.filter(note => 
+    note.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    note.content.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <Container maxW="container.xl" p={4}>
       <Flex justifyContent="space-between" alignItems="center" mb={8}>
@@ -63,7 +69,6 @@ const Index = () => {
           <Heading as="h1" size="lg" color="purple.500">Notes</Heading>
         </Flex>
         <Flex alignItems="center">
-          
           <Button onClick={logout} colorScheme="red" ml={4}>Logout</Button>
           <img src={profileIcon} alt="Profile Icon" style={{ width: "40px", borderRadius: "50%" }} />
           <IconButton aria-label="Menu" icon={<HamburgerIcon />} variant="ghost" ml={4} />
@@ -71,10 +76,10 @@ const Index = () => {
       </Flex>
       <InputGroup mb={8}>
         <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
-        <Input type="text" placeholder="Search notes" />
+        <Input type="text" placeholder="Search notes" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
       </InputGroup>
       <Flex wrap="wrap" justifyContent="space-between">
-        {notes.map(note => (
+        {filteredNotes.map(note => (
           <Box key={note.id} bg={`${note.color}.50`} p={4} borderRadius="md" width="30%" mb={4}>
             <Heading as="h3" size="md" mb={2}>{note.title}</Heading>
             <Text mb={4} whiteSpace="pre-wrap">{note.content}</Text>
