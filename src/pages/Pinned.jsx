@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Box, Container, Flex, Heading, Text, VStack, Button } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Text, VStack, Button, Menu, MenuButton, MenuList, MenuItem, IconButton } from "@chakra-ui/react";
+import { FiMoreVertical } from "react-icons/fi";
 import { useNotes, useUpdateNote, useDeleteNote } from "../integrations/supabase/index.js";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
 import { format } from "date-fns";
@@ -41,10 +42,15 @@ const Pinned = () => {
             <Text mb={4} whiteSpace="pre-wrap">{note.content}</Text>
             <Text fontSize="sm" color="gray.500">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
             <Flex justifyContent="space-between">
-              <Button size="sm" onClick={() => handlePinClick(note)}>
-                {note.pinned ? "Unpin" : "Pin"}
-              </Button>
-              <Button size="sm" colorScheme="red" onClick={() => handleDeleteClick(note.id)}>Delete</Button>
+              <Menu>
+                <MenuButton as={IconButton} icon={<FiMoreVertical />} variant="ghost" />
+                <MenuList>
+                  <MenuItem onClick={() => handlePinClick(note)}>
+                    {note.pinned ? "Unpin" : "Pin"}
+                  </MenuItem>
+                  <MenuItem onClick={() => handleDeleteClick(note.id)}>Delete</MenuItem>
+                </MenuList>
+              </Menu>
             </Flex>
           </Box>
         ))}
