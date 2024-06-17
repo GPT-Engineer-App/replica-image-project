@@ -88,22 +88,20 @@ const Index = () => {
       </InputGroup>
       <Flex wrap="wrap" justifyContent="space-between">
         {filteredNotes.map(note => (
-          <Box key={note.id} bg={`${note.color}.50`} p={4} borderRadius="md" width="30%" mb={4}>
+          <Box key={note.id} bg={`${note.color}.50`} p={4} borderRadius="md" width="30%" mb={4} position="relative">
+            <Menu>
+              <MenuButton as={IconButton} icon={<FiMoreVertical />} variant="ghost" position="absolute" top="0" right="0" />
+              <MenuList>
+                <MenuItem onClick={() => handleEditClick(note)}>Edit</MenuItem>
+                <MenuItem onClick={() => handleDeleteClick(note.id)}>Delete</MenuItem>
+                <MenuItem onClick={() => handlePinClick(note)}>
+                  {note.pinned ? "Unpin" : "Pin"}
+                </MenuItem>
+              </MenuList>
+            </Menu>
             <Heading as="h3" size="md" mb={2}>{note.title}</Heading>
             <Text mb={4} whiteSpace="pre-wrap">{note.content}</Text>
             <Text fontSize="sm" color="gray.500">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
-            <Flex justifyContent="space-between">
-              <Menu>
-                <MenuButton as={IconButton} icon={<FiMoreVertical />} variant="ghost" />
-                <MenuList>
-                  <MenuItem onClick={() => handleEditClick(note)}>Edit</MenuItem>
-                  <MenuItem onClick={() => handleDeleteClick(note.id)}>Delete</MenuItem>
-                  <MenuItem onClick={() => handlePinClick(note)}>
-                    {note.pinned ? "Unpin" : "Pin"}
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </Flex>
           </Box>
         ))}
       </Flex>
