@@ -3,14 +3,18 @@ import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeft
 import { SearchIcon, HamburgerIcon, AddIcon } from "@chakra-ui/icons";
 import notesIcon from "../../public/images/notes-icon.png";
 import profileIcon from "../../public/images/profile-icon.png";
-import { useNotes, useAddNote } from "../integrations/supabase/index.js";
+import { useNotes, useAddNote, useUpdateNote, useDeleteNote } from "../integrations/supabase/index.js";
 import { format } from "date-fns";
 
 const Index = () => {
   const { data: notes, error, isLoading } = useNotes();
   const addNote = useAddNote();
+  const updateNote = useUpdateNote();
+  const deleteNote = useDeleteNote();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newNote, setNewNote] = useState({ title: "", content: "", color: "pink" });
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [noteToEdit, setNoteToEdit] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,6 +28,21 @@ const Index = () => {
     await addNote.mutateAsync(newNote);
     setIsModalOpen(false);
     setNewNote({ title: "", content: "", color: "pink" });
+  };
+
+  const handleEditClick = (note) => {
+    setNoteToEdit(note);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateSubmit = async () => {
+    await updateNote.mutateAsync(noteToEdit);
+    setIsEditModalOpen(false);
+    setNoteToEdit(null);
+  };
+
+  const handleDeleteClick = async (id) => {
+    await deleteNote.mutateAsync(id);
   };
 
   if (isLoading) {
@@ -57,6 +76,10 @@ const Index = () => {
             <Heading as="h3" size="md" mb={2}>{note.title}</Heading>
             <Text mb={4} whiteSpace="pre-wrap">{note.content}</Text>
             <Text fontSize="sm" color="gray.500">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
+            <Flex justifyContent="space-between">
+              <Button size="sm" onClick={() => handleEditClick(note)}>Edit</Button>
+              <Button size="sm" colorScheme="red" onClick={() => handleDeleteClick(note.id)}>Delete</Button>
+            </Flex>
           </Box>
         ))}
       </Flex>
@@ -91,6 +114,39 @@ const Index = () => {
               Save
             </Button>
             <Button variant="ghost" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit note</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl id="title" mb={4}>
+              <FormLabel>Title</FormLabel>
+              <Input type="text" name="title" value={noteToEdit?.title || ""} onChange={(e) => setNoteToEdit({ ...noteToEdit, title: e.target.value })} />
+            </FormControl>
+            <FormControl id="content" mb={4}>
+              <FormLabel>Content</FormLabel>
+              <Textarea name="content" value={noteToEdit?.content || ""} onChange={(e) => setNoteToEdit({ ...noteToEdit, content: e.target.value })} />
+            </FormControl>
+            <FormControl id="color" mb={4}>
+              <FormLabel>Color</FormLabel>
+              <Select name="color" value={noteToEdit?.color || "pink"} onChange={(e) => setNoteToEdit({ ...noteToEdit, color: e.target.value })}>
+                <option value="pink">Pink</option>
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+              </Select>
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleUpdateSubmit}>
+              Save
+            </Button>
+            <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
