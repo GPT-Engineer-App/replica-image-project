@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { FiMoreVertical } from "react-icons/fi";
 import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeftElement, Text, VStack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Select, Textarea } from "@chakra-ui/react";
 import { SearchIcon, HamburgerIcon, AddIcon } from "@chakra-ui/icons";
 import notesIcon from "../../public/images/notes-icon.png";
@@ -91,11 +93,16 @@ const Index = () => {
             <Text mb={4} whiteSpace="pre-wrap">{note.content}</Text>
             <Text fontSize="sm" color="gray.500">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
             <Flex justifyContent="space-between">
-              <Button size="sm" onClick={() => handleEditClick(note)}>Edit</Button>
-              <Button size="sm" colorScheme="red" onClick={() => handleDeleteClick(note.id)}>Delete</Button>
-              <Button size="sm" colorScheme={note.pinned ? "yellow" : "gray"} onClick={() => handlePinClick(note)}>
-                {note.pinned ? "Unpin" : "Pin"}
-              </Button>
+              <Menu>
+                <MenuButton as={IconButton} icon={<FiMoreVertical />} variant="ghost" />
+                <MenuList>
+                  <MenuItem onClick={() => handleEditClick(note)}>Edit</MenuItem>
+                  <MenuItem onClick={() => handleDeleteClick(note.id)}>Delete</MenuItem>
+                  <MenuItem onClick={() => handlePinClick(note)}>
+                    {note.pinned ? "Unpin" : "Pin"}
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Flex>
           </Box>
         ))}
