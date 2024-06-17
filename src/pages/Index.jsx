@@ -1,12 +1,30 @@
-import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeftElement, Text, VStack } from "@chakra-ui/react";
+import { useState } from "react";
+import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeftElement, Text, VStack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Select, Textarea } from "@chakra-ui/react";
 import { SearchIcon, HamburgerIcon, AddIcon } from "@chakra-ui/icons";
 import notesIcon from "../../public/images/notes-icon.png";
 import profileIcon from "../../public/images/profile-icon.png";
-import { useNotes } from "../integrations/supabase/index.js";
+import { useNotes, useAddNote } from "../integrations/supabase/index.js";
 import { format } from "date-fns";
 
 const Index = () => {
   const { data: notes, error, isLoading } = useNotes();
+  const addNote = useAddNote();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newNote, setNewNote] = useState({ title: "", content: "", color: "pink" });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewNote({
+      ...newNote,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    await addNote.mutateAsync(newNote);
+    setIsModalOpen(false);
+    setNewNote({ title: "", content: "", color: "pink" });
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -42,7 +60,40 @@ const Index = () => {
           </Box>
         ))}
       </Flex>
-      <IconButton aria-label="Add" icon={<AddIcon />} variant="solid" colorScheme="purple" position="absolute" bottom="20px" right="20px" />
+      <IconButton aria-label="Add" icon={<AddIcon />} variant="solid" colorScheme="purple" position="absolute" bottom="20px" right="20px" onClick={() => setIsModalOpen(true)} />
+      
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create a new note</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl id="title" mb={4}>
+              <FormLabel>Title</FormLabel>
+              <Input type="text" name="title" value={newNote.title} onChange={handleInputChange} />
+            </FormControl>
+            <FormControl id="content" mb={4}>
+              <FormLabel>Content</FormLabel>
+              <Textarea name="content" value={newNote.content} onChange={handleInputChange} />
+            </FormControl>
+            <FormControl id="color" mb={4}>
+              <FormLabel>Color</FormLabel>
+              <Select name="color" value={newNote.color} onChange={handleInputChange}>
+                <option value="pink">Pink</option>
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+              </Select>
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+              Save
+            </Button>
+            <Button variant="ghost" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 };
