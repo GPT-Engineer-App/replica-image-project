@@ -2,12 +2,11 @@ import { useState } from "react";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { FiMoreVertical } from "react-icons/fi";
 import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeftElement, Text, VStack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Select, Textarea } from "@chakra-ui/react";
-import { SearchIcon, HamburgerIcon, AddIcon } from "@chakra-ui/icons";
-import notesIcon from "../../public/images/notes-icon.png";
-import profileIcon from "../../public/images/profile-icon.png";
+import { SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { useNotes, useAddNote, useUpdateNote, useDeleteNote } from "../integrations/supabase/index.js";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
 import { format } from "date-fns";
+import { FaHome, FaStickyNote, FaBookmark } from "react-icons/fa";
 
 const Index = () => {
   const { data: notes, error, isLoading } = useNotes();
@@ -20,7 +19,7 @@ const Index = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [noteToEdit, setNoteToEdit] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [pinnedNotes, setPinnedNotes] = useState([]);
+  const [selectedNote, setSelectedNote] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +54,10 @@ const Index = () => {
     await updateNote.mutateAsync({ ...note, pinned: !note.pinned });
   };
 
+  const handleNoteClick = (note) => {
+    setSelectedNote(note);
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -69,42 +72,39 @@ const Index = () => {
   );
 
   return (
-    <Container maxW="container.xl" p={4}>
-      <Flex justifyContent="space-between" alignItems="center" mb={8}>
-        <Flex alignItems="center">
-          <img src={notesIcon} alt="Notes Icon" style={{ width: "50px", marginRight: "10px" }} />
-          <Heading as="h1" size="lg" color="purple.500">Notes</Heading>
+    <Flex>
+      <Box w="20%" bg="gray.100" p={4}>
+        <Flex direction="column" align="center" mb={8}>
+          <InputGroup mb={4}>
+            <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
+            <Input type="text" placeholder="Search notes" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          </InputGroup>
+          <IconButton aria-label="Home" icon={<FaHome />} variant="ghost" mb={4} />
+          <IconButton aria-label="Notes" icon={<FaStickyNote />} variant="ghost" mb={4} />
+          <IconButton aria-label="Bookmarks" icon={<FaBookmark />} variant="ghost" mb={4} />
         </Flex>
-        <Flex alignItems="center">
-          <Button as="a" href="/pinned" colorScheme="purple" ml={4}>Pinned Notes</Button>
-          <Button onClick={logout} colorScheme="red" ml={4}>Logout</Button>
-          <img src={profileIcon} alt="Profile Icon" style={{ width: "40px", borderRadius: "50%" }} />
-          <IconButton aria-label="Menu" icon={<HamburgerIcon />} variant="ghost" ml={4} />
-        </Flex>
-      </Flex>
-      <InputGroup mb={8}>
-        <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
-        <Input type="text" placeholder="Search notes" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-      </InputGroup>
-      <Flex wrap="wrap" justifyContent="space-between">
-        {filteredNotes.map(note => (
-          <Box key={note.id} bg={`${note.color}.50`} p={4} borderRadius="md" width="30%" mb={4} position="relative" display="flex" flexDirection="column" justifyContent="space-between">
-            <Menu>
-              <MenuButton as={IconButton} icon={<FiMoreVertical />} variant="ghost" position="absolute" top="0" right="0" />
-              <MenuList>
-                <MenuItem onClick={() => handleEditClick(note)}>Edit</MenuItem>
-                <MenuItem onClick={() => handleDeleteClick(note.id)}>Delete</MenuItem>
-                <MenuItem onClick={() => handlePinClick(note)}>
-                  {note.pinned ? "Unpin" : "Pin"}
-                </MenuItem>
-              </MenuList>
-            </Menu>
-            <Heading as="h3" size="md" mb={2}>{note.title}</Heading>
-            <Text mb={4} whiteSpace="pre-wrap">{note.content}</Text>
-            <Text fontSize="sm" color="gray.500" mt="auto">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
+        <Heading as="h3" size="md" mb={4}>My Notes</Heading>
+        <VStack spacing={4}>
+          {filteredNotes.map(note => (
+            <Box key={note.id} bg={`${note.color}.50`} p={4} borderRadius="md" width="100%" onClick={() => handleNoteClick(note)}>
+              <Heading as="h4" size="sm" mb={2}>{note.title}</Heading>
+              <Text noOfLines={2}>{note.content}</Text>
+              <Text fontSize="xs" color="gray.500">{format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
+            </Box>
+          ))}
+        </VStack>
+      </Box>
+      <Box w="80%" p={4}>
+        {selectedNote ? (
+          <Box>
+            <Heading as="h2" size="lg" mb={4}>{selectedNote.title}</Heading>
+            <Text mb={4}>{selectedNote.content}</Text>
+            <Text fontSize="sm" color="gray.500">{format(new Date(selectedNote.created_at), 'MMMM d, yyyy h:mm a')}</Text>
           </Box>
-        ))}
-      </Flex>
+        ) : (
+          <Text>Select a note to view its details</Text>
+        )}
+      </Box>
       <IconButton aria-label="Add" icon={<AddIcon />} variant="solid" colorScheme="purple" position="absolute" bottom="20px" right="20px" onClick={() => setIsModalOpen(true)} />
       
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
@@ -172,7 +172,7 @@ const Index = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Container>
+    </Flex>
   );
 };
 
