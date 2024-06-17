@@ -1,8 +1,8 @@
 import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeftElement, Text, VStack } from "@chakra-ui/react";
 import { SearchIcon, HamburgerIcon, AddIcon } from "@chakra-ui/icons";
-import notesIcon from "../public/images/notes-icon.png";
-import profileIcon from "../public/images/profile-icon.png";
-import icon3d from "../public/images/3d-icon.png";
+import notesIcon from "../../public/images/notes-icon.png";
+import profileIcon from "../../public/images/profile-icon.png";
+import icon3d from "../../public/images/3d-icon.png";
 
 const Index = () => {
   return (
