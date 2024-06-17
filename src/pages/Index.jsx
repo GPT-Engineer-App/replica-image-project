@@ -73,7 +73,6 @@ const Index = () => {
     <Flex>
       <Box w="20%" bg="gray.100" p={4}>
         <Flex direction="column" align="center" mb={8}>
-          <Avatar size="xl" mb={4} />
           <InputGroup mb={4}>
             <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
             <Input type="text" placeholder="Search notes" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
