@@ -4,6 +4,7 @@ import { SearchIcon, HamburgerIcon, AddIcon } from "@chakra-ui/icons";
 import notesIcon from "../../public/images/notes-icon.png";
 import profileIcon from "../../public/images/profile-icon.png";
 import { useNotes, useAddNote, useUpdateNote, useDeleteNote } from "../integrations/supabase/index.js";
+import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
 import { format } from "date-fns";
 
 const Index = () => {
@@ -11,6 +12,7 @@ const Index = () => {
   const addNote = useAddNote();
   const updateNote = useUpdateNote();
   const deleteNote = useDeleteNote();
+  const { logout } = useSupabaseAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newNote, setNewNote] = useState({ title: "", content: "", color: "pink" });
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -61,7 +63,8 @@ const Index = () => {
           <Heading as="h1" size="lg" color="purple.500">Notes</Heading>
         </Flex>
         <Flex alignItems="center">
-          <Text mr={4}>Puneet Shakya</Text>
+          
+          <Button onClick={logout} colorScheme="red" ml={4}>Logout</Button>
           <img src={profileIcon} alt="Profile Icon" style={{ width: "40px", borderRadius: "50%" }} />
           <IconButton aria-label="Menu" icon={<HamburgerIcon />} variant="ghost" ml={4} />
         </Flex>
