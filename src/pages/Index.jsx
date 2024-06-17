@@ -37,7 +37,7 @@ const Index = () => {
         {notes.map(note => (
           <Box key={note.id} bg={`${note.color}.50`} p={4} borderRadius="md" width="30%" mb={4}>
             <Heading as="h3" size="md" mb={2}>{note.title}</Heading>
-            <Text mb={4}>{note.content}</Text>
+            <Text mb={4} whiteSpace="pre-wrap">{note.content}</Text>
             <Text fontSize="sm" color="gray.500">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
           </Box>
         ))}
