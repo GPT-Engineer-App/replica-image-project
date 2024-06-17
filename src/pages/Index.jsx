@@ -18,6 +18,7 @@ const Index = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [noteToEdit, setNoteToEdit] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [pinnedNotes, setPinnedNotes] = useState([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +29,7 @@ const Index = () => {
   };
 
   const handleSubmit = async () => {
-    await addNote.mutateAsync(newNote);
+    await addNote.mutateAsync({ ...newNote, pinned: false });
     setIsModalOpen(false);
     setNewNote({ title: "", content: "", color: "pink" });
   };
@@ -46,6 +47,10 @@ const Index = () => {
 
   const handleDeleteClick = async (id) => {
     await deleteNote.mutateAsync(id);
+  };
+
+  const handlePinClick = async (note) => {
+    await updateNote.mutateAsync({ ...note, pinned: !note.pinned });
   };
 
   if (isLoading) {
@@ -69,6 +74,7 @@ const Index = () => {
           <Heading as="h1" size="lg" color="purple.500">Notes</Heading>
         </Flex>
         <Flex alignItems="center">
+          <Button as="a" href="/pinned" colorScheme="purple" ml={4}>Pinned Notes</Button>
           <Button onClick={logout} colorScheme="red" ml={4}>Logout</Button>
           <img src={profileIcon} alt="Profile Icon" style={{ width: "40px", borderRadius: "50%" }} />
           <IconButton aria-label="Menu" icon={<HamburgerIcon />} variant="ghost" ml={4} />
@@ -87,6 +93,9 @@ const Index = () => {
             <Flex justifyContent="space-between">
               <Button size="sm" onClick={() => handleEditClick(note)}>Edit</Button>
               <Button size="sm" colorScheme="red" onClick={() => handleDeleteClick(note.id)}>Delete</Button>
+              <Button size="sm" colorScheme={note.pinned ? "yellow" : "gray"} onClick={() => handlePinClick(note)}>
+                {note.pinned ? "Unpin" : "Pin"}
+              </Button>
             </Flex>
           </Box>
         ))}
