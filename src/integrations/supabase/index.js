@@ -19,9 +19,6 @@ const fromSupabase = async (query) => {
 
 /* supabase integration types
 
-// EXAMPLE TYPES SECTION
-// DO NOT USE TYPESCRIPT
-
 ### notes
 
 | name       | type        | format | required |
@@ -31,10 +28,9 @@ const fromSupabase = async (query) => {
 | title      | text        | string | false    |
 | content    | text        | string | false    |
 | color      | text        | string | false    |
-	
-*/
+| pinned     | boolean     | boolean| false    |
 
-// Example hook for models
+*/
 
 export const useNotes = () => useQuery({
     queryKey: ['notes'],
@@ -75,4 +71,3 @@ export const useDeleteNote = () => {
         },
     });
 };
-
