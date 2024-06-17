@@ -69,32 +69,28 @@ const Index = () => {
   );
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center">
-          <img src={notesIcon} alt="Notes Icon" className="w-12 mr-2" />
-          <h1 className="text-3xl font-bold text-purple-500">Notes</h1>
-        </div>
-        <div className="flex items-center">
-          <a href="/pinned" className="btn btn-purple ml-4">Pinned Notes</a>
-          <button onClick={logout} className="btn btn-red ml-4">Logout</button>
-          <img src={profileIcon} alt="Profile Icon" className="w-10 rounded-full ml-4" />
-          <button className="btn btn-ghost ml-4">
-            <HamburgerIcon />
-          </button>
-        </div>
-      </div>
-      <div className="mb-8">
-        <div className="relative">
-          <input type="text" placeholder="Search notes" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="input input-bordered w-full pl-10" />
-          <SearchIcon className="absolute left-3 top-3 text-gray-400" />
-        </div>
-      </div>
-      <div className="flex flex-wrap justify-between">
+    <Container maxW="container.xl" p={4}>
+      <Flex justifyContent="space-between" alignItems="center" mb={8}>
+        <Flex alignItems="center">
+          <img src={notesIcon} alt="Notes Icon" style={{ width: "50px", marginRight: "10px" }} />
+          <Heading as="h1" size="lg" color="purple.500">Notes</Heading>
+        </Flex>
+        <Flex alignItems="center">
+          <Button as="a" href="/pinned" colorScheme="purple" ml={4}>Pinned Notes</Button>
+          <Button onClick={logout} colorScheme="red" ml={4}>Logout</Button>
+          <img src={profileIcon} alt="Profile Icon" style={{ width: "40px", borderRadius: "50%" }} />
+          <IconButton aria-label="Menu" icon={<HamburgerIcon />} variant="ghost" ml={4} />
+        </Flex>
+      </Flex>
+      <InputGroup mb={8}>
+        <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
+        <Input type="text" placeholder="Search notes" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+      </InputGroup>
+      <Flex wrap="wrap" justifyContent="space-between">
         {filteredNotes.map(note => (
-          <div key={note.id} className={`bg-${note.color}-50 p-4 rounded-md w-1/3 mb-4 relative flex flex-col justify-between`}>
+          <Box key={note.id} bg={`${note.color}.50`} p={4} borderRadius="md" width="30%" mb={4} position="relative" display="flex" flexDirection="column" justifyContent="space-between">
             <Menu>
-              <MenuButton as={IconButton} icon={<FiMoreVertical />} variant="ghost" className="absolute top-0 right-0" />
+              <MenuButton as={IconButton} icon={<FiMoreVertical />} variant="ghost" position="absolute" top="0" right="0" />
               <MenuList>
                 <MenuItem onClick={() => handleEditClick(note)}>Edit</MenuItem>
                 <MenuItem onClick={() => handleDeleteClick(note.id)}>Delete</MenuItem>
@@ -103,15 +99,13 @@ const Index = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <h3 className="text-xl font-bold mb-2">{note.title}</h3>
-            <p className="mb-4 whitespace-pre-wrap">{note.content}</p>
-            <p className="text-sm text-gray-500 mt-auto">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</p>
-          </div>
+            <Heading as="h3" size="md" mb={2}>{note.title}</Heading>
+            <Text mb={4} whiteSpace="pre-wrap">{note.content}</Text>
+            <Text fontSize="sm" color="gray.500" mt="auto">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
+          </Box>
         ))}
-      </div>
-      <button className="btn btn-purple fixed bottom-5 right-5" onClick={() => setIsModalOpen(true)}>
-        <AddIcon />
-      </button>
+      </Flex>
+      <IconButton aria-label="Add" icon={<AddIcon />} variant="solid" colorScheme="purple" position="absolute" bottom="20px" right="20px" onClick={() => setIsModalOpen(true)} />
       
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ModalOverlay />
@@ -178,7 +172,7 @@ const Index = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </div>
+    </Container>
   );
 };
 
