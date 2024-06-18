@@ -10,7 +10,6 @@ function App() {
   return (
     <SupabaseAuthProvider>
       <Router>
-        <Navbar />
         <Routes>
           <Route exact path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
