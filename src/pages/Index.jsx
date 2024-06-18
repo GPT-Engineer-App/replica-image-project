@@ -3,8 +3,6 @@ import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { FiMoreVertical } from "react-icons/fi";
 import { Box, Container, Flex, Heading, IconButton, Input, InputGroup, InputLeftElement, Text, VStack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Select, Textarea } from "@chakra-ui/react";
 import { SearchIcon, HamburgerIcon, AddIcon } from "@chakra-ui/icons";
-import notesIcon from "../../public/images/notes-icon.png";
-import profileIcon from "../../public/images/profile-icon.png";
 import { useNotes, useAddNote, useUpdateNote, useDeleteNote } from "../integrations/supabase/index.js";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
 import { format } from "date-fns";
@@ -73,14 +71,7 @@ const Index = () => {
     <Container maxW="container.xl" p={4}>
       <Flex justifyContent="space-between" alignItems="center" mb={8}>
         <Flex alignItems="center">
-          <img src={notesIcon} alt="Notes Icon" style={{ width: "50px", marginRight: "10px" }} />
           <Heading as="h1" size="lg" color="purple.500">Notes</Heading>
-        </Flex>
-        <Flex alignItems="center">
-          <Button as="a" href="/pinned" colorScheme="purple" ml={4}>Pinned Notes</Button>
-          <Button onClick={logout} colorScheme="red" ml={4}>Logout</Button>
-          <img src={profileIcon} alt="Profile Icon" style={{ width: "40px", borderRadius: "50%" }} />
-          <IconButton aria-label="Menu" icon={<HamburgerIcon />} variant="ghost" ml={4} />
         </Flex>
       </Flex>
       <InputGroup mb={8}>
