@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Box, Container, Flex, Heading, Text, VStack, Button, Menu, MenuButton, MenuList, MenuItem, IconButton } from "@chakra-ui/react";
+import NoteCard from "../components/NoteCard.jsx";
 import { FiMoreVertical } from "react-icons/fi";
 import { useNotes, useUpdateNote, useDeleteNote } from "../integrations/supabase/index.js";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
@@ -37,24 +38,13 @@ const Pinned = () => {
       </Flex>
       <Flex wrap="wrap" justifyContent="space-between">
         {pinnedNotes.map(note => (
-          <Box key={note.id} bg={`${note.color}.50`} p={4} borderRadius="md" width="30%" mb={4} display="flex" flexDirection="column" justifyContent="space-between">
-            <div>
-              <Heading as="h3" size="md" mb={2}>{note.title}</Heading>
-              <Text mb={4} whiteSpace="pre-wrap">{note.content}</Text>
-            </div>
-            <Text fontSize="sm" color="gray.500">created at {format(new Date(note.created_at), 'MMMM d, yyyy h:mm a')}</Text>
-            <Flex justifyContent="space-between">
-              <Menu>
-                <MenuButton as={IconButton} icon={<FiMoreVertical />} variant="ghost" />
-                <MenuList>
-                  <MenuItem onClick={() => handlePinClick(note)}>
-                    {note.pinned ? "Unpin" : "Pin"}
-                  </MenuItem>
-                  <MenuItem onClick={() => handleDeleteClick(note.id)}>Delete</MenuItem>
-                </MenuList>
-              </Menu>
-            </Flex>
-          </Box>
+          <NoteCard 
+            key={note.id}
+            note={note}
+            onEdit={handleEditClick}
+            onDelete={handleDeleteClick}
+            onPin={handlePinClick}
+          />
         ))}
       </Flex>
     </Container>
