@@ -98,7 +98,7 @@ const Index = () => {
           />
         ))}
       </Flex>
-      <IconButton aria-label="Add" icon={<AddIcon />} variant="solid" colorScheme="purple" position="absolute" bottom="20px" right="20px" onClick={() => setIsModalOpen(true)} />
+      <IconButton aria-label="Add" icon={<AddIcon />} variant="solid" colorScheme="blue" position="absolute" bottom="20px" right="20px" onClick={() => setIsModalOpen(true)} />
       
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ModalOverlay />
