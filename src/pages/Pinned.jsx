@@ -47,7 +47,6 @@ const Pinned = () => {
     <Container maxW="container.xl" p={4}>
       <Flex justifyContent="space-between" alignItems="center" mb={8}>
         <Heading as="h1" size="lg" color="purple.500">Pinned Notes</Heading>
-        <Button onClick={logout} colorScheme="red" ml={4}>Logout</Button>
       </Flex>
       <Flex wrap="wrap" justifyContent="space-between">
         {pinnedNotes.map(note => (
