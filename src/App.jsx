@@ -4,13 +4,13 @@ import Login from "./pages/Login.jsx";
 import Pinned from "./pages/Pinned.jsx";
 import { SupabaseAuthProvider } from "./integrations/supabase/auth.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-
+import Navbar from "./components/Navbar.jsx";
 
 function App() {
   return (
     <SupabaseAuthProvider>
       <Router>
-        
+        <Navbar />
         <Routes>
           <Route exact path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
