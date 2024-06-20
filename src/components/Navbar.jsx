@@ -22,6 +22,9 @@ const Navbar = () => {
           <Button as={Link} to="/about" colorScheme="purple" variant="ghost" mr={4}>
             About Us
           </Button>
+          <Button as={Link} to="/pricing" colorScheme="purple" variant="ghost" mr={4}>
+            Pricing
+          </Button>
           {session ? (
             <Button onClick={logout} colorScheme="red" variant="ghost">
               Logout
