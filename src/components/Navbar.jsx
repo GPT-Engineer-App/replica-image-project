@@ -19,6 +19,9 @@ const Navbar = () => {
           <Button as={Link} to="/pinned" colorScheme="purple" variant="ghost" mr={4}>
             Pinned Notes
           </Button>
+          <Button as={Link} to="/about" colorScheme="purple" variant="ghost" mr={4}>
+            About Us
+          </Button>
           {session ? (
             <Button onClick={logout} colorScheme="red" variant="ghost">
               Logout
