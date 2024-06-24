@@ -7,16 +7,16 @@ import Pricing from "./pages/Pricing.jsx";
 import Contact from "./pages/Contact.jsx";
 import EmptyPage from "./pages/EmptyPage.jsx";
 import { SupabaseAuthProvider } from "./integrations/supabase/auth.jsx";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+
 
 function App() {
   return (
     <SupabaseAuthProvider>
       <Router>
         <Routes>
-          <Route exact path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+          <Route exact path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/pinned" element={<ProtectedRoute><Pinned /></ProtectedRoute>} />
+          <Route path="/pinned" element={<Pinned />} />
           <Route path="/about" element={<About />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/contact" element={<Contact />} />
